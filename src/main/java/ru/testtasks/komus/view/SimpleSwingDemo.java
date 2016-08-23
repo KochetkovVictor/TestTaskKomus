@@ -1,17 +1,18 @@
 package ru.testtasks.komus.view;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
+import com.opencsv.CSVReader;
+
 import ru.testtasks.komus.model.SimpleTableData;
+import ru.testtasks.komus.utils.FileEncodingConverter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class SimpleSwingDemo {
 
@@ -40,36 +41,37 @@ public class SimpleSwingDemo {
         exit.addActionListener(e -> System.exit(0));
         openFile.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv", "txt");
             fileChooser.setFileFilter(filter);
             int returnValue = fileChooser.showDialog(null, "Open a file");
             if (returnValue == JFileChooser.APPROVE_OPTION) {
 
                 file = fileChooser.getSelectedFile();
-                jfr.setJMenuBar(menuBar);
+                List<SimpleTableData>  lines=new ArrayList<>();
                 try {
-                    Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(new FileReader(file));
-                    List<SimpleTableData> stds = new ArrayList<>();
-                    for (CSVRecord record : records) {
-                        SimpleTableData std = new SimpleTableData();
-                        System.out.println(record.get(0));
-                        std.setNumberOfLicence(record.get(0));
-                        std.setParentProgram(record.get(1));
-                        std.setFirm(record.get(2));
-                        std.setProduct(record.get(3));
-                        std.setProductKey(record.get(4));
-                        std.setType(record.get(5));
-                        std.setActivations(record.get(6));
-                        std.setWorkingPlaces(Integer.valueOf(record.get(7)));
-                        std.setStatus(record.get(8));
-                        stds.add(std);
-                    }
 
-                    stds.forEach(std -> System.out.println());
-                } catch (IOException exc) {
-                    System.out.println("YEYEYEE");
-                    exc.printStackTrace();
+                    CSVReader reader = new CSVReader(new FileReader(FileEncodingConverter.convertToUtf8(file)), ',');
+
+                    String[] nextLine;
+                    while ((nextLine = reader.readNext()) != null) {
+                        SimpleTableData std=new SimpleTableData();
+                        std.setField1(nextLine[0]);
+                        std.setField2(nextLine[1]);
+                        std.setField3(nextLine[2]);
+                        std.setIntField1(Integer.valueOf(nextLine[3].trim()));
+                        std.setField4(nextLine[4]);
+                        std.setField5(nextLine[5]);
+                        std.setIntField2(Integer.valueOf(nextLine[6].trim()));
+                        std.setDoubleField(Double.valueOf(nextLine[7].trim()));
+                        lines.add(std);
+                    }
+                } catch (IOException ex) {
+
+                    ex.printStackTrace();
+                } catch (ArrayIndexOutOfBoundsException aioube) {
+                    JOptionPane.showMessageDialog(jfr, "Wrong file encoding");
                 }
+                lines.forEach(System.out::println);
             }
         });
 

@@ -3,85 +3,90 @@ package ru.testtasks.komus.model;
 
 public class SimpleTableData {
 
-    private String numberOfLicence;
-    private String parentProgram;
-    private String firm;
-    private String product;
-    private String productKey;
-    private String type;
-    private String activations;
-    private int workingPlaces;
-    private String status;
+    private String field1;
+    private String field2;
+    private String field3;
+    private int intField1;
+    private String field4;
+    private String field5;
+    private int intField2;
+    private double doubleField;
 
-    public String getNumberOfLicence() {
-        return numberOfLicence;
+    public String getField1() {
+        return field1;
     }
 
-    public void setNumberOfLicence(String numberOfLicence) {
-        this.numberOfLicence = numberOfLicence;
+    public void setField1(String field1) {
+        this.field1 = field1;
     }
 
-    public String getParentProgram() {
-        return parentProgram;
+    public String getField2() {
+        return field2;
     }
 
-    public void setParentProgram(String parentProgram) {
-        this.parentProgram = parentProgram;
+    public void setField2(String field2) {
+        this.field2 = field2;
     }
 
-    public String getFirm() {
-        return firm;
+    public String getField3() {
+        return field3;
     }
 
-    public void setFirm(String firm) {
-        this.firm = firm;
+    public void setField3(String field3) {
+        this.field3 = field3;
     }
 
-    public String getProduct() {
-        return product;
+    public int getIntField1() {
+        return intField1;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    public void setIntField1(int intField1) {
+        this.intField1 = intField1;
     }
 
-    public String getProductKey() {
-        return productKey;
+    public String getField4() {
+        return field4;
     }
 
-    public void setProductKey(String productKey) {
-        this.productKey = productKey;
+    public void setField4(String field4) {
+        this.field4 = field4;
     }
 
-    public String getType() {
-        return type;
+    public String getField5() {
+        return field5;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setField5(String field5) {
+        this.field5 = field5;
     }
 
-    public String getActivations() {
-        return activations;
+    public int getIntField2() {
+        return intField2;
     }
 
-    public void setActivations(String activations) {
-        this.activations = activations;
+    public void setIntField2(int intField2) {
+        this.intField2 = intField2;
     }
 
-    public int getWorkingPlaces() {
-        return workingPlaces;
+    public double getDoubleField() {
+        return doubleField;
     }
 
-    public void setWorkingPlaces(int workingPlaces) {
-        this.workingPlaces = workingPlaces;
+    public void setDoubleField(double doubleField) {
+        this.doubleField = doubleField;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    @Override
+    public String toString() {
+        return "SimpleTableData{" +
+                "field1='" + field1 + '\'' +
+                ", field2='" + field2 + '\'' +
+                ", field3='" + field3 + '\'' +
+                ", intField1=" + intField1 +
+                ", field4='" + field4 + '\'' +
+                ", field5='" + field5 + '\'' +
+                ", intField2=" + intField2 +
+                ", doubleField=" + doubleField +
+                '}';
     }
 }
