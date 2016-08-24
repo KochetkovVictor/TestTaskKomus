@@ -12,6 +12,23 @@ public class SimpleTableData {
     private int intField2;
     private double doubleField;
 
+    public Object[] toObjectArray()
+    {
+        Object[] objects=new Object[SimpleTableData.getNumberOfFields()];
+        objects[0]=getField1();
+        objects[1]=getField2();
+        objects[2]=getField3();
+        objects[3]=getIntField1();
+        objects[4]=getField4();
+        objects[5]=getField5();
+        objects[6]=getIntField2();
+        objects[7]=getDoubleField();
+        return objects;
+    }
+    public static int getNumberOfFields() {
+        return 8;
+    }
+
     public String getField1() {
         return field1;
     }
