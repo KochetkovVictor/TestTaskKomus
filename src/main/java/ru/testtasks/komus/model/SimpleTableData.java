@@ -18,11 +18,11 @@ public class SimpleTableData {
         objects[0]=getField1();
         objects[1]=getField2();
         objects[2]=getField3();
-        objects[3]=getIntField1();
+        objects[3]= getIntField1() + "";
         objects[4]=getField4();
         objects[5]=getField5();
-        objects[6]=getIntField2();
-        objects[7]=getDoubleField();
+        objects[6]=getIntField2()+"";
+        objects[7]=getDoubleField()+"";
         return objects;
     }
     public static int getNumberOfFields() {
