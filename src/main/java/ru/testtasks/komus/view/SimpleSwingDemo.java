@@ -4,13 +4,12 @@ import com.opencsv.CSVReader;
 
 import com.opencsv.CSVWriter;
 import ru.testtasks.komus.model.SimpleTableData;
-import ru.testtasks.komus.utils.FileEncodingConverter;
-
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -34,12 +33,12 @@ public class SimpleSwingDemo extends JFrame {
         JMenu fileMenu = new JMenu("Options");
 
         JMenuItem openFileItem = new JMenuItem("Open from File");
-
+        JMenuItem editFileItem = new JMenuItem("Edit");
         JMenuItem saveFileItem = new JMenuItem("Save  to File");
         JMenuItem exitItem = new JMenuItem("Exit");
 
         fileMenu.add(openFileItem);
-
+        fileMenu.add(editFileItem);
         fileMenu.add(saveFileItem);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
@@ -53,6 +52,8 @@ public class SimpleSwingDemo extends JFrame {
             openFile();
         });
 
+        editFileItem.addActionListener(e -> ((SimpleDataTableModel)table.getModel()).setEditable());
+
         saveFileItem.addActionListener(e -> {
             saveFile();
         });
@@ -64,8 +65,8 @@ public class SimpleSwingDemo extends JFrame {
 
         if (table != null) {
             this.remove(jsp);
-            jsp=new JScrollPane();
-            ((SimpleDataTableModel)table.getModel()).getSimpleTableDataList().clear();
+            jsp = new JScrollPane();
+            ((SimpleDataTableModel) table.getModel()).getSimpleTableDataList().clear();
             this.repaint();
             this.setSize(new Dimension(1000, 100));
         }
@@ -81,9 +82,7 @@ public class SimpleSwingDemo extends JFrame {
             File inFile = fileChooser.getSelectedFile();
 
             try {
-
-                CSVReader reader = new CSVReader(new FileReader(FileEncodingConverter.convertToUtf8(inFile)), ',');
-
+                CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(new FileInputStream(inFile),"UTF-8")),',');
                 String[] nextLine;
                 while ((nextLine = reader.readNext()) != null) {
                     SimpleTableData std = new SimpleTableData();
@@ -104,43 +103,49 @@ public class SimpleSwingDemo extends JFrame {
                 JOptionPane.showMessageDialog(this, "Wrong inFile encoding or inFile format");
             }
 
-            table = new JTable(new SimpleDataTableModel(lines));
-
+            TableModel model=new SimpleDataTableModel(lines);
+            table = new JTable(model);
+            RowSorter<TableModel> sorter = new TableRowSorter<>(model);
+            table.setRowSorter(sorter);
             this.setSize(1000, 200);
             table.setPreferredScrollableViewportSize(new Dimension(950, 100));
-            jsp=new JScrollPane(table);
+            jsp = new JScrollPane(table);
             this.add(jsp);
         }
     }
 
     private void saveFile() {
         TableModel model = table.getModel();
-        lines.clear();
+        lines = new ArrayList<>();
         for (int i = 0; i < model.getRowCount(); i++) {
             SimpleTableData std = new SimpleTableData();
             std.setField1((String) model.getValueAt(i, 0));
             std.setField2((String) model.getValueAt(i, 1));
             std.setField3((String) model.getValueAt(i, 2));
-            std.setIntField1(Integer.valueOf(((String) model.getValueAt(i, 3)).trim()));
+            std.setIntField1((Integer) model.getValueAt(i, 3));
             std.setField4((String) model.getValueAt(i, 4));
             std.setField5((String) model.getValueAt(i, 5));
-            std.setIntField2(Integer.valueOf(((String) model.getValueAt(i, 6)).trim()));
-            std.setDoubleField(Double.valueOf(((String) model.getValueAt(i, 7)).trim()));
+            std.setIntField2((Integer) model.getValueAt(i, 6));
+            std.setDoubleField((Double) model.getValueAt(i, 7));
             lines.add(std);
         }
+
         JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv", "txt");
+        fileChooser.setFileFilter(filter);
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 
-            try (FileWriter fw = new FileWriter(fileChooser.getSelectedFile())) {
+            try (Writer fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileChooser.getSelectedFile()), "UTF-8"))) {
                 CSVWriter writer = new CSVWriter(fw);
                 List<String[]> list = toStringArray(lines);
                 writer.writeAll(list);
                 writer.close();
             } catch (IOException ioe) {
+                ioe.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Sorry! file is corrupted");
             }
         }
-
+        lines.clear();
     }
 
     private List<String[]> toStringArray(List<SimpleTableData> tableData) {

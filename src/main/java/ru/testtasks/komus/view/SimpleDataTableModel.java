@@ -10,6 +10,8 @@ class SimpleDataTableModel extends AbstractTableModel {
 
     private List<SimpleTableData> simpleTableDataList;
 
+    private boolean isEditable;
+
     SimpleDataTableModel(List<SimpleTableData> simpleTableDataList) {
         super();
         this.simpleTableDataList = simpleTableDataList;
@@ -27,7 +29,7 @@ class SimpleDataTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        switch(columnIndex){
+        switch (columnIndex) {
             case 0:
                 return simpleTableDataList.get(rowIndex).getField1();
             case 1:
@@ -80,12 +82,16 @@ class SimpleDataTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
+        return isEditable;
+    }
+
+    void setEditable() {
+        isEditable = true;
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch(columnIndex){
+        switch (columnIndex) {
             case 0:
                 return simpleTableDataList.get(0).getField1().getClass();
             case 1:
@@ -104,6 +110,43 @@ class SimpleDataTableModel extends AbstractTableModel {
                 return Double.class;
             default:
                 return null;
+        }
+    }
+
+    @Override
+    public void fireTableCellUpdated(int row, int column) {
+        super.fireTableCellUpdated(row, column);
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        SimpleTableData std = simpleTableDataList.get(rowIndex);
+        System.out.println(columnIndex);
+        switch (columnIndex) {
+            case 0:
+                std.setField1((String)aValue);
+                break;
+            case 1:
+                std.setField2((String)aValue);
+                break;
+            case 2:
+                std.setField3((String)aValue);
+                break;
+            case 3:
+                std.setIntField1((Integer)aValue);
+                break;
+            case 4:
+                std.setField4((String)aValue);
+                break;
+            case 5:
+                std.setField5((String)aValue);
+                break;
+            case 6:
+                std.setIntField2((Integer)aValue);
+                break;
+            case 7:
+                std.setDoubleField((Double)aValue);
+                break;
         }
     }
 

@@ -1,11 +1,6 @@
 package ru.testtasks.komus.model;
 
 
-import org.apache.commons.collections.ArrayStack;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class SimpleTableData {
 
     private String field1;
