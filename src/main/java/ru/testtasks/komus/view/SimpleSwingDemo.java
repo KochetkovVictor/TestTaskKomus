@@ -5,11 +5,11 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import ru.testtasks.komus.model.SimpleTableData;
 import ru.testtasks.komus.utils.FileEncodingConverter;
-import sun.java2d.pipe.SpanShapeRenderer;
+
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.AbstractTableModel;
+
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.io.*;
@@ -63,10 +63,11 @@ public class SimpleSwingDemo extends JFrame {
     private void openFile() {
 
         if (table != null) {
-            //((SimpleDataTableModel) table.getModel()).fireTableDataChanged();
             this.remove(jsp);
             jsp=new JScrollPane();
             ((SimpleDataTableModel)table.getModel()).getSimpleTableDataList().clear();
+            this.repaint();
+            this.setSize(new Dimension(1000, 100));
         }
 
         JFileChooser fileChooser = new JFileChooser();

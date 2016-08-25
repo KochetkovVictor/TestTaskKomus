@@ -107,7 +107,7 @@ class SimpleDataTableModel extends AbstractTableModel {
         }
     }
 
-    public List<SimpleTableData> getSimpleTableDataList() {
+    List<SimpleTableData> getSimpleTableDataList() {
         return simpleTableDataList;
     }
 }
