@@ -1,33 +1,21 @@
 package ru.testtasks.komus.model;
 
 
+import org.apache.commons.collections.ArrayStack;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleTableData {
 
     private String field1;
     private String field2;
     private String field3;
-    private int intField1;
+    private Integer intField1;
     private String field4;
     private String field5;
-    private int intField2;
-    private double doubleField;
-
-    public Object[] toObjectArray()
-    {
-        Object[] objects=new Object[SimpleTableData.getNumberOfFields()];
-        objects[0]=getField1();
-        objects[1]=getField2();
-        objects[2]=getField3();
-        objects[3]= getIntField1() + "";
-        objects[4]=getField4();
-        objects[5]=getField5();
-        objects[6]=getIntField2()+"";
-        objects[7]=getDoubleField()+"";
-        return objects;
-    }
-    public static int getNumberOfFields() {
-        return 8;
-    }
+    private Integer intField2;
+    private Double doubleField;
 
     public String getField1() {
         return field1;

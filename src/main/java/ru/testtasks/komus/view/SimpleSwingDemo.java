@@ -5,10 +5,13 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import ru.testtasks.komus.model.SimpleTableData;
 import ru.testtasks.komus.utils.FileEncodingConverter;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -58,9 +61,12 @@ public class SimpleSwingDemo extends JFrame {
     }
 
     private void openFile() {
-        if (table !=null)
-        {
-            System.out.println("table"+table.getColumnName(1));
+
+        if (table != null) {
+            //((SimpleDataTableModel) table.getModel()).fireTableDataChanged();
+            this.remove(jsp);
+            jsp=new JScrollPane();
+            ((SimpleDataTableModel)table.getModel()).getSimpleTableDataList().clear();
         }
 
         JFileChooser fileChooser = new JFileChooser();
@@ -93,20 +99,16 @@ public class SimpleSwingDemo extends JFrame {
                 reader.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
-            } catch (ArrayIndexOutOfBoundsException aioube) {
+            } catch (Exception exc) {
                 JOptionPane.showMessageDialog(this, "Wrong inFile encoding or inFile format");
             }
-            Object[][] data = new Object[lines.size()][SimpleTableData.getNumberOfFields()];
 
-            for (int j = 0; j < lines.size(); j++) {
-                data[j] = lines.get(j).toObjectArray();
-            }
-            Object[] tales = {"Field1", "Field2", "Field3", "IntField1", "Field4", "Field5", "IntField2", "DoubleField"};
+            table = new JTable(new SimpleDataTableModel(lines));
 
-            table = new JTable(data, tales);
-            jsp = new JScrollPane(table);
+            this.setSize(1000, 200);
+            table.setPreferredScrollableViewportSize(new Dimension(950, 100));
+            jsp=new JScrollPane(table);
             this.add(jsp);
-
         }
     }
 
@@ -141,8 +143,8 @@ public class SimpleSwingDemo extends JFrame {
     }
 
     private List<String[]> toStringArray(List<SimpleTableData> tableData) {
-        List<String[]> result=new ArrayList<>();
-        for (SimpleTableData std : lines) {
+        List<String[]> result = new ArrayList<>();
+        for (SimpleTableData std : tableData) {
             result.add(new String[]{std.getField1(),
                     std.getField2(), std.getField3(),
                     std.getIntField1() + "",
