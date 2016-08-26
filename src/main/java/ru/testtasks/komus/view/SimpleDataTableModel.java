@@ -4,9 +4,11 @@ import ru.testtasks.komus.model.SimpleTableData;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 class SimpleDataTableModel extends AbstractTableModel {
+    private static Logger log = Logger.getLogger(SimpleDataTableModel.class.getName());
 
     private List<SimpleTableData> simpleTableDataList;
 

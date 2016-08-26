@@ -3,11 +3,12 @@ package ru.testtasks.komus.view;
 import com.opencsv.CSVReader;
 
 import com.opencsv.CSVWriter;
+import org.slf4j.LoggerFactory;
 import ru.testtasks.komus.model.SimpleTableData;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -15,8 +16,12 @@ import java.io.*;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.logging.LogManager;
+
 
 public class SimpleSwingDemo extends JFrame {
+
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(SimpleSwingDemo.class);
 
     private List<SimpleTableData> lines = new ArrayList<>();
     private JTable table;
@@ -46,13 +51,20 @@ public class SimpleSwingDemo extends JFrame {
         menuBar.add(fileMenu);
         this.setJMenuBar(menuBar);
 
-        exitItem.addActionListener(e -> System.exit(0));
+        exitItem.addActionListener(e -> {
+            LOG.info("Application is closed");
+            System.exit(0);
+        });
 
         openFileItem.addActionListener(e -> {
             openFile();
         });
 
-        editFileItem.addActionListener(e -> ((SimpleDataTableModel)table.getModel()).setEditable());
+        editFileItem.addActionListener(e -> {
+                    LOG.info("The model is set to be editable");
+                    ((SimpleDataTableModel) table.getModel()).setEditable();
+                }
+        );
 
         saveFileItem.addActionListener(e -> {
             saveFile();
@@ -82,7 +94,7 @@ public class SimpleSwingDemo extends JFrame {
             File inFile = fileChooser.getSelectedFile();
 
             try {
-                CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(new FileInputStream(inFile),"UTF-8")),',');
+                CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(new FileInputStream(inFile), "UTF-8")), ',');
                 String[] nextLine;
                 while ((nextLine = reader.readNext()) != null) {
                     SimpleTableData std = new SimpleTableData();
@@ -96,14 +108,16 @@ public class SimpleSwingDemo extends JFrame {
                     std.setDoubleField(Double.valueOf(nextLine[7].trim()));
                     lines.add(std);
                 }
+                LOG.info("Open a file " + inFile.getAbsolutePath());
                 reader.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException ioe) {
+                LOG.debug(ioe.getMessage());
             } catch (Exception exc) {
+                LOG.debug("The reason of exception is " + exc.toString());
                 JOptionPane.showMessageDialog(this, "Wrong inFile encoding or inFile format");
             }
 
-            TableModel model=new SimpleDataTableModel(lines);
+            TableModel model = new SimpleDataTableModel(lines);
             table = new JTable(model);
             RowSorter<TableModel> sorter = new TableRowSorter<>(model);
             table.setRowSorter(sorter);
@@ -111,6 +125,7 @@ public class SimpleSwingDemo extends JFrame {
             table.setPreferredScrollableViewportSize(new Dimension(950, 100));
             jsp = new JScrollPane(table);
             this.add(jsp);
+
         }
     }
 
@@ -142,10 +157,12 @@ public class SimpleSwingDemo extends JFrame {
                 writer.close();
             } catch (IOException ioe) {
                 ioe.printStackTrace();
+                LOG.debug(ioe.getMessage());
                 JOptionPane.showMessageDialog(this, "Sorry! file is corrupted");
             }
         }
         lines.clear();
+        LOG.info("Save the model to file " + fileChooser.getSelectedFile().getAbsolutePath());
     }
 
     private List<String[]> toStringArray(List<SimpleTableData> tableData) {
