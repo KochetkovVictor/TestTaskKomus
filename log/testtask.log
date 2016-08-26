@@ -1,0 +1,8 @@
+2016-08-26 11:49:46,592 INFO  SimpleSwingDemo [SimpleSwingDemo.java:111] Open a file C:\OLD DISK\Idownloads\simple.csv
+2016-08-26 11:50:38,672 INFO  SimpleSwingDemo [SimpleSwingDemo.java:64] The model is set to be editable
+2016-08-26 11:51:08,562 INFO  SimpleSwingDemo [SimpleSwingDemo.java:165] Save the model to file C:\OLD DISK\Idownloads\ansi_test_task_example.txt
+2016-08-26 11:59:37,069 INFO  SimpleSwingDemo [SimpleSwingDemo.java:111] Open a file C:\OLD DISK\Idownloads\simple.csv
+2016-08-26 11:59:39,449 INFO  SimpleSwingDemo [SimpleSwingDemo.java:64] The model is set to be editable
+2016-08-26 11:59:44,692 INFO  SimpleSwingDemo [SimpleDataTableModel.java:126] Old Value is ﻿Плита
+New value is ﻿Плита и Плотва
+2016-08-26 12:00:03,239 INFO  SimpleSwingDemo [SimpleSwingDemo.java:165] Save the model to file C:\OLD DISK\Idownloads\ansi_test_task_example.txt

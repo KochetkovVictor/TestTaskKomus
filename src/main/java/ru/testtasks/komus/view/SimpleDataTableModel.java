@@ -1,14 +1,15 @@
 package ru.testtasks.komus.view;
 
+import org.slf4j.LoggerFactory;
 import ru.testtasks.komus.model.SimpleTableData;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 
 class SimpleDataTableModel extends AbstractTableModel {
-    private static Logger log = Logger.getLogger(SimpleDataTableModel.class.getName());
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(SimpleSwingDemo.class);
 
     private List<SimpleTableData> simpleTableDataList;
 
@@ -122,6 +123,7 @@ class SimpleDataTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        LOG.info("Old Value is "+getValueAt(rowIndex, columnIndex)+"\n\r"+" New value is "+aValue);
         SimpleTableData std = simpleTableDataList.get(rowIndex);
         System.out.println(columnIndex);
         switch (columnIndex) {
